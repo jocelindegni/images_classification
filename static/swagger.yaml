@@ -1,0 +1,194 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0.0"
+  title: " SWAGGER IMAGES CLASSIFICATION"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: ""
+schemes:
+  - "https"
+  - "http"
+paths:
+  /uploads:
+    post:
+      summary: "Add a new images to the database"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/"
+      responses:
+        201:
+          description: "Images added"
+  /invoices:
+    get:
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/invoice"
+
+  /budgets:
+    get:
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/budget"
+
+  /air_manifests:
+    get:
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/air_manifest"
+
+  /forms:
+    get:
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findPetsByStatus"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/form"
+
+  /unlabeled:
+    get:
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findPetsByStatus"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/unlabeled"
+
+  /handwritten:
+    get:
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findPetsByStatus"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/handwritten"
+
+definitions:
+  invoice:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Nom du fichier"
+      url:
+        type: "string"
+        description: "Url pour telecharger le fichier"
+      date:
+        type: "string"
+        description: "Date d'upload"
+        format: "date-time"
+      tva:
+        type: "boolean"
+        description: "True s'il y a présence d'une tva"
+      siren:
+        type: "boolean"
+        description: "True s'il y a présence de la siren de l'entreprise"
+      adresse:
+        type: "boolean"
+        description: "Adresse conforme à lbase de donnée"
+  form:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Nom du fichier"
+      url:
+        type: "string"
+        description: "Url pour telecharger le fichier"
+
+    budget:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Nom du fichier"
+        url:
+          type: "string"
+          description: "Url pour telecharger le fichier"
+
+    unlabeled:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Nom du fichier"
+        url:
+          type: "string"
+          description: "Url pour telecharger le fichier"
+
+    air_manifest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Nom du fichier"
+        url:
+          type: "string"
+          description: "Url pour telecharger le fichier"
+
+    handwritten:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Nom du fichier"
+        url:
+          type: "string"
+          description: "Url pour telecharger le fichier"
+
