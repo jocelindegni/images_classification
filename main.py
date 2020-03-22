@@ -1,11 +1,13 @@
 from flask import Flask, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS = CORS(app)
 URL_BASE = 'localhost:5000'
 # SWAGGER
 SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.yaml'
+API_URL = '/static/swagger4.yaml'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
@@ -34,7 +36,7 @@ def classified_folders():
             'total': 321,
             'add': 11
         },
-        'air_manifest': {
+        'specification': {
             'total': 500,
             'add': 25
         },
@@ -65,11 +67,15 @@ def all_documents():
 
 @app.route('/invoices', methods=['GET'])
 def list_invoices():
-    data = { 'name': 'file.png', 'date':"", 'siren': True, 'tva': True, 'adresse': False, 'url': URL_BASE+'/static/invoices/invoice.jfif'}
-    return jsonify([data])
+    data1 = { 'name': 'file.png', 'date':"", 'siren': False, 'tva': True, 'adresse': True, 'company_name': 'rdmi', 'score': 45, 'url': URL_BASE+'/static/invoices/invoice.jfif'}
+    data2 = {'name': 'file.png', 'date': "", 'siren': True, 'tva': True, 'adresse': False, 'company_name': 'rdmi', 'score': 80,
+             'url': URL_BASE + '/static/invoices/invoice2.jpg'}
+    data3 = {'name': 'file.png', 'date': "", 'siren': True, 'tva': False, 'adresse': False, 'company_name': 'rdmi', 'score': 20,
+             'url': URL_BASE + '/static/invoices/invoice3.jpg'}
+    return jsonify([data1,  data2, data3])
 
 
-@app.route('/air_manifests', methods=['GET'])
+@app.route('/specifications', methods=['GET'])
 def list_air_manifest():
     return jsonify([])
 

@@ -11,13 +11,12 @@ info:
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 basePath: ""
 schemes:
-  - "https"
   - "http"
 paths:
   /uploads:
     post:
       summary: "Add a new images to the database"
-      description: ""
+      description: "Upload new folder containing all type of document-image"
       consumes:
         - "application/json"
       produces:
@@ -25,17 +24,16 @@ paths:
       parameters:
         - in: "body"
           name: "body"
-          description: "Pet object that needs to be added to the store"
           required: true
-          schema:
-            $ref: "#/definitions/"
+
       responses:
         201:
           description: "Images added"
   /invoices:
     get:
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
+      summary: "Return an array of invoice type"
+      consumes:
+        - "multipart/form-data"
       produces:
         - "application/json"
       responses:
@@ -48,8 +46,7 @@ paths:
 
   /budgets:
     get:
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
+      summary: "Return a set of budgets files"
       produces:
         - "application/json"
       responses:
@@ -60,10 +57,9 @@ paths:
             items:
               $ref: "#/definitions/budget"
 
-  /air_manifests:
+  /specifications:
     get:
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
+      summary: "Return a set of specs files"
       produces:
         - "application/json"
       responses:
@@ -72,13 +68,11 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/air_manifest"
+              $ref: "#/definitions/specification"
 
   /forms:
     get:
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
+      summary: "Return a set of forms files"
       produces:
         - "application/json"
       responses:
@@ -91,9 +85,7 @@ paths:
 
   /unlabeled:
     get:
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
+      summary: "All unclassified documents are set in unlabeled class"
       produces:
         - "application/json"
       responses:
@@ -106,9 +98,7 @@ paths:
 
   /handwritten:
     get:
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
+      summary: "Return a set of budgets files"
       produces:
         - "application/json"
       responses:
@@ -125,70 +115,76 @@ definitions:
     properties:
       name:
         type: "string"
-        description: "Nom du fichier"
+        description: "filename"
       url:
         type: "string"
-        description: "Url pour telecharger le fichier"
+        description: "Url for download file"
       date:
         type: "string"
-        description: "Date d'upload"
+        description: "Date of uploading file / entrance in the system"
         format: "date-time"
       tva:
         type: "boolean"
-        description: "True s'il y a présence d'une tva"
+        description: "True if TVA exist on the invoice"
       siren:
         type: "boolean"
-        description: "True s'il y a présence de la siren de l'entreprise"
+        description: "True if SIREN number exist in open source database"
       adresse:
         type: "boolean"
-        description: "Adresse conforme à lbase de donnée"
+        description: "True if adress is conform to open source database"
+      company_name:
+        type: "string"
+      score:
+        type: "number"
+        description: "Score of probability to fraud risk (between 0 - 100) "
   form:
     type: "object"
     properties:
       name:
         type: "string"
-        description: "Nom du fichier"
+        description: "filename"
       url:
         type: "string"
-        description: "Url pour telecharger le fichier"
+        description: "Url to download file"
 
-    budget:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-          description: "Nom du fichier"
-        url:
-          type: "string"
-          description: "Url pour telecharger le fichier"
+  budget:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "filename"
+      url:
+        type: "string"
+        description: "Url to download file"
 
-    unlabeled:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-          description: "Nom du fichier"
-        url:
-          type: "string"
-          description: "Url pour telecharger le fichier"
+  unlabeled:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "filename"
+      url:
+        type: "string"
+        description: "Url to download file"
 
-    air_manifest:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-          description: "Nom du fichier"
-        url:
-          type: "string"
-          description: "Url pour telecharger le fichier"
+  specification:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "filename"
+      url:
+        type: "string"
+        description: "Url to download file"
 
-    handwritten:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-          description: "Nom du fichier"
-        url:
-          type: "string"
-          description: "Url pour telecharger le fichier"
+  handwritten:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "filename"
+      url:
+        type: "string"
+        description: "Url to download file"
+
 
