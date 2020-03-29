@@ -9,6 +9,10 @@ verify_ssl = true
 flask = "*"
 flask-swagger-ui = "*"
 flask-cors = "*"
+imutils = "*"
+numpy = "*"
+pandas = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.7"

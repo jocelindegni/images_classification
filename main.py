@@ -1,9 +1,17 @@
-from flask import Flask, jsonify
+import os
+
+from flask import Flask, jsonify, request
 from flask_swagger_ui import get_swaggerui_blueprint
-from flask_cors import CORS
+from os import walk
+
+from werkzeug.utils import secure_filename
+
+import database
+from model.functions import main
 
 app = Flask(__name__)
-CORS = CORS(app)
+BASE_PATH = './static/'
+TMP_PATH = './tmp'
 URL_BASE = 'localhost:5000'
 # SWAGGER
 SWAGGER_URL = '/swagger'
@@ -17,6 +25,8 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
 )
 
 app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+
+
 # END SWAGGER
 
 @app.route('/')
@@ -24,12 +34,34 @@ def hello_world():
     return 'Images classification V1'
 
 
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route('/uploads', methods=['POST'])
 def upload_files():
-    return 'Files uploaded', 201
+    images_paths_uploaded = []
+    # check if the post request has the file part
+    if 'files[]' not in request.files:
+        resp = jsonify({'message': 'No file part in the request'})
+        resp.status_code = 400
+        return resp
+
+    files = request.files.getlist('files[]')
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            global TMP_PATH
+            file.save(os.path.join(TMP_PATH, filename))
+            images_paths_uploaded.append(os.path.join(TMP_PATH, filename))
+
+    print(images_paths_uploaded)
+    data = main(images_paths_uploaded)
+    return jsonify(data), 200
 
 
-@app.route('/classified_folders',  methods=['GET'])
+@app.route('/classified_folders', methods=['GET'])
 def classified_folders():
     data = {
         'invoices': {
@@ -67,12 +99,17 @@ def all_documents():
 
 @app.route('/invoices', methods=['GET'])
 def list_invoices():
-    data1 = { 'name': 'file.png', 'date':"", 'siren': False, 'tva': True, 'adresse': True, 'company_name': 'rdmi', 'score': 45, 'url': URL_BASE+'/static/invoices/invoice.jfif'}
-    data2 = {'name': 'file.png', 'date': "", 'siren': True, 'tva': True, 'adresse': False, 'company_name': 'rdmi', 'score': 80,
+    data1 = {'name': 'file.png', 'date': "", 'siren': False, 'tva': True, 'adresse': True, 'company_name': 'rdmi',
+             'score': 45, 'url': URL_BASE + '/static/invoices/invoice.jfif'}
+    data2 = {'name': 'file.png', 'date': "", 'siren': True, 'tva': True, 'adresse': False, 'company_name': 'rdmi',
+             'score': 80,
              'url': URL_BASE + '/static/invoices/invoice2.jpg'}
-    data3 = {'name': 'file.png', 'date': "", 'siren': True, 'tva': False, 'adresse': False, 'company_name': 'rdmi', 'score': 20,
+    data3 = {'name': 'file.png', 'date': "", 'siren': True, 'tva': False, 'adresse': False, 'company_name': 'rdmi',
+             'score': 20,
              'url': URL_BASE + '/static/invoices/invoice3.jpg'}
-    return jsonify([data1,  data2, data3])
+    # return jsonify([data1,  data2, data3])
+    database.test()
+    return database.get_files()
 
 
 @app.route('/specifications', methods=['GET'])
